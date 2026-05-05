@@ -1,9 +1,10 @@
 package fr.zeteox.command;
 
 import fr.zeteox.BotConfig;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import fr.zeteox.util.EmbedHelper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 public class CommandManager {
 
+    final static Logger logger = LoggerFactory.getLogger(CommandManager.class);
     private static CommandManager instance;
     private final Map<String, ICommand> commands = new HashMap<>();
 
@@ -33,7 +35,7 @@ public class CommandManager {
         URL resource = Thread.currentThread().getContextClassLoader().getResource(packagePath);
 
         if (resource == null) {
-            System.out.println("Package introuvable : " + packageName);
+            logger.error("Package introuvable : " + packageName);
             return;
         }
 
@@ -41,7 +43,7 @@ public class CommandManager {
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".class"));
 
         if (files == null) {
-            System.out.println("Aucune commandes trouvée au chemin: " + resource.getFile());
+            logger.error("Aucune commandes trouvée au chemin: " + resource.getFile());
             return;
         }
 
@@ -57,7 +59,7 @@ public class CommandManager {
                     registerCommand(command);
                 }
             } catch (Exception e) {
-                System.out.println("Impossible de charger : " + className);
+                logger.error("Impossible de charger : " + className);
                 e.printStackTrace();
             }
         }
@@ -65,7 +67,7 @@ public class CommandManager {
 
     private void registerCommand(ICommand command) {
         commands.put(command.getName().toLowerCase(), command);
-        System.out.println("Commande enregistrée : " + command.getName());
+        logger.info("Commande enregistrée : " + command.getName());
     }
 
     public void dispatch(MessageReceivedEvent event) {
@@ -81,14 +83,17 @@ public class CommandManager {
 
         ICommand command = commands.get(commandName);
         if (command != null) {
+            logger.info("Command used : " + commandName);
             command.execute(event, args);
         } else {
-            MessageEmbed error = new EmbedBuilder().setColor(Color.RED).setTitle("Commande Inconnue")
-                    .setDescription(
-                            "La commande `" + commandName + "` n'est pas valide.\n" +
-                            "**Utilise `!help` pour voir toutes les commandes disponibles**"
-                    ).build();
-            event.getMessage().replyEmbeds(error).queue();
+            logger.error("Unknown command : " + commandName);
+            event.getMessage().replyEmbeds(EmbedHelper.createEmbed(
+                    "Unknown command",
+                    "La commande `" + commandName + "` n'est pas valide.\n" +
+                    "**Utilise `!help` pour voir toutes les commandes disponibles**",
+                    Color.RED
+                )
+            ).queue();
         }
     }
 

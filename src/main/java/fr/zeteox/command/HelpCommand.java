@@ -1,8 +1,7 @@
 package fr.zeteox.command;
 
 import fr.zeteox.BotConfig;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
+import fr.zeteox.util.EmbedHelper;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.awt.*;
@@ -20,9 +19,7 @@ public class HelpCommand implements ICommand {
 
     @Override
     public void execute(MessageReceivedEvent event, String[] args) {
-        MessageEmbed helpMessage = new EmbedBuilder().setColor(Color.MAGENTA).setTitle("Liste des commandes")
-                .setDescription(getCommandList()).build();
-        event.getMessage().replyEmbeds(helpMessage).queue();
+        event.getMessage().replyEmbeds(EmbedHelper.createEmbed("Commands list", getCommandList(), Color.MAGENTA)).queue();
     }
 
     private String getCommandList() {

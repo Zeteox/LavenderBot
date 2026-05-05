@@ -8,10 +8,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class Main {
     void main (String[] args) {
-        JDA api = JDABuilder.createDefault(BotConfig.TOKEN).enableIntents(GatewayIntent.MESSAGE_CONTENT).build(); ;
-        System.out.println("----------- Loading Commands -----------");
+        JDA api = JDABuilder.createDefault(BotConfig.TOKEN).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
         CommandManager.getInstance();
-        System.out.println("----------- Loaded Commands -----------");
         api.addEventListener(new CommandListener());
     }
 }

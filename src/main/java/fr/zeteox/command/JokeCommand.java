@@ -2,12 +2,9 @@ package fr.zeteox.command;
 
 import fr.zeteox.BotConfig;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.JSONString;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
