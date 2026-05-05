@@ -1,5 +1,6 @@
 package fr.zeteox.command;
 
+import fr.zeteox.BotConfig;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -9,12 +10,12 @@ import java.awt.*;
 public class HelpCommand implements ICommand {
     @Override
     public String getName() {
-        return "!help";
+        return "help";
     }
 
     @Override
     public String getDescription() {
-        return "Return an help message";
+        return "Return all available commands";
     }
 
     @Override
@@ -29,7 +30,7 @@ public class HelpCommand implements ICommand {
         String[] keys = CommandManager.getInstance().getCommands().keySet().toArray(new String[0]);
         for (int i = 0; i < CommandManager.getInstance().getCommands().size(); i++) {
             ICommand command = CommandManager.getInstance().getCommands().get(keys[i]);
-            stringBuilder.append("**").append(command.getName()).append("** - ").append(command.getDescription()).append("\n");
+            stringBuilder.append("**").append(BotConfig.PREFIX).append(command.getName()).append("** - ").append(command.getDescription()).append("\n");
         }
 
         return stringBuilder.toString();

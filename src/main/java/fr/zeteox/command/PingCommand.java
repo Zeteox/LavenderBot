@@ -1,16 +1,17 @@
 package fr.zeteox.command;
 
+import fr.zeteox.BotConfig;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 public class PingCommand implements ICommand {
     @Override
     public String getName() {
-        return "!ping";
+        return "ping";
     }
 
     @Override
     public String getDescription() {
-        return "Return pong to ping";
+        return "Respond to the ping command with a... pong?";
     }
 
     @Override

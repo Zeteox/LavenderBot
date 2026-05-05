@@ -1,5 +1,6 @@
 package fr.zeteox.command;
 
+import fr.zeteox.BotConfig;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -39,7 +40,10 @@ public class CommandManager {
         File folder = new File(resource.getFile());
         File[] files = folder.listFiles((dir, name) -> name.endsWith(".class"));
 
-        if (files == null) return;
+        if (files == null) {
+            System.out.println("Aucune commandes trouvée au chemin: " + resource.getFile());
+            return;
+        }
 
         for (File file : files) {
             String className = packageName + "." + file.getName().replace(".class", "");
@@ -69,7 +73,7 @@ public class CommandManager {
 
         if (message.isBlank()) return;
 
-        String[] parts = message.trim().split("\\s+");
+        String[] parts = message.substring(BotConfig.PREFIX.length()).trim().split("\\s+");
         String commandName = parts[0].toLowerCase();
 
         String[] args = new String[parts.length - 1];
